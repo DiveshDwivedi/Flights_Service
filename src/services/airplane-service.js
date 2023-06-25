@@ -9,10 +9,17 @@ async function createAirplane(data) {
         const airplane = await airplaneRepository.create(data);
         return airplane;
     } catch (error) {
-       if (error.name == 'TypeError') {
-            throw new AppError('Can not create new Airplane Object', StatusCodes.INTERNAL_SERVER_ERROR);
+        console.log(error);
+       if (error.name == 'SequelizeValidationError') {
+        let explaination = [];
+
+        error.errors.forEach((err) => {
+            explaination.push([err.message, err.value]);
+        });
+
+        throw new AppError(explaination, StatusCodes.BAD_REQUEST);
        }
-        throw error;
+       throw new AppError('Cannot create new Airplane Object', StatusCodes.INTERNAL_SERVER_ERROR);
     }
 }
 

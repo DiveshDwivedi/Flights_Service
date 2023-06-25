@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     modelNumber: { 
       type: DataTypes.STRING,
       allowNull:false,
+      validate: {
+        isAlphanumeric: true,
+      }
     },
     capacity: {
       type:DataTypes.INTEGER,

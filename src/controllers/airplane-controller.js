@@ -56,12 +56,49 @@ async function getAllAirplanes(req, response) {
 async function getAirplane(req, response) {
   try {
     const airplane = await AirplaneService.getAirplane(req.params.id);
-    if (!airplane) {
-      return response.status(StatusCodes.NOT_FOUND).json({'message' : "Record Not found", "data" : airplane});
-    }
     SuccessResponse.data = airplane;
     return response.status(StatusCodes.OK).json(SuccessResponse);
-    
+  } catch (error) {
+    ErroResponse.error = error;
+    return response.status(error.StatusCode).json(ErroResponse);
+  }
+}
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} response 
+ * @returns 
+ * 
+ * @DELETE : /airplane/:id
+ */
+async function destroyAirplane(req, response) {
+  try {
+    const airplane = await AirplaneService.destroyAirplane(req.params.id);
+    SuccessResponse.data = airplane;
+    return response.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErroResponse.error = error;
+    return response.status(error.StatusCode).json(ErroResponse);
+  }
+}
+
+/**
+ * 
+ * @param {*} req 
+ * @param {*} response 
+ * @returns 
+ * 
+ * @PATCH : /airplane/:id
+ */
+async function updateAirplane(req, response) {
+  try {
+    const airplane = await AirplaneService.updateAirplane(req.params.id,{
+      modelNumber: req.body.modelNumber,
+      capacity: req.body.capacity,
+    });
+    SuccessResponse.data = airplane;
+    return response.status(StatusCodes.OK).json(SuccessResponse);
   } catch (error) {
     ErroResponse.error = error;
     return response.status(error.StatusCode).json(ErroResponse);
@@ -71,5 +108,7 @@ async function getAirplane(req, response) {
 module.exports = {
   createAirplane,
   getAllAirplanes,
-  getAirplane
+  getAirplane,
+  destroyAirplane,
+  updateAirplane
 };

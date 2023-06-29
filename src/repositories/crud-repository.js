@@ -18,6 +18,10 @@ class CrudRepository {
                     id:data,
                 }
             });
+
+            if (!response) {
+                throw new AppError('Not able to fetch record', StatusCodes.NOT_FOUND);
+            }
             return response;
     }
 
@@ -32,6 +36,18 @@ class CrudRepository {
     async getAll() {
             const response = await this.model.findAll();
             return response;
+    }
+
+    async update(id, data) {
+        const response = await this.model.update(data, { where : {
+            id : id,
+        }});
+
+        if (response != 0) {
+            const airplane = await this.model.findByPk(id)
+            return airplane;
+        }
+        throw new AppError('Not able to fetch record', StatusCodes.NOT_FOUND);
     }
 }
 

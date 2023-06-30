@@ -17,11 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      // unique: true,   // sequelize 
-      unique: {
-        args: true,
-        msg: 'City name should be unique!'
-    },
+      unique: true,
     }
   }, {
     sequelize,

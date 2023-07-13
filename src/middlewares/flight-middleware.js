@@ -58,6 +58,7 @@ function validateCreateRequest(req, res, next) {
     return res.json(ErroResponse);
   }
 
+  // need to add middleware for departureTime < arrivalTime
   next();
 }
 

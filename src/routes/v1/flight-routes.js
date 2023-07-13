@@ -11,4 +11,11 @@ router.post('/',
             FlightController.createFlight
             );
 
+/**
+ * /api/v1/flights?trips=BLR-GKP @GET
+ */
+router.get('/',   
+FlightController.getAllFlights
+);
+
 module.exports = router;

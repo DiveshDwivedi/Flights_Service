@@ -1,6 +1,8 @@
 const { StatusCodes } = require("http-status-codes");
 const { ErroResponse } = require("../utils/common");
 const AppError  = require('../utils/errors/app-error');
+const { compareTime } = require('../utils/helpers/datetime-helpers');
+
 function validateCreateRequest(req, res, next) {
   if (!req.body.flightNumber) {
     ErroResponse.message = "Something went wrong while creating flight";
@@ -44,6 +46,14 @@ function validateCreateRequest(req, res, next) {
     return res.json(ErroResponse);
   }
 
+  // departureTime < arrivalTime
+  const dateTime = compareTime(req.body.arrivalTime, req.body.departureTime);
+  if (!dateTime) {
+    ErroResponse.message = "Something went wrong while creating flight";
+    ErroResponse.error = new AppError(["arrivalTime should be greater than departureTime"], StatusCodes.BAD_REQUEST);
+    return res.json(ErroResponse);
+  }
+
   if (!req.body.price) {
     ErroResponse.message = "Something went wrong while creating flight";
     ErroResponse.error = new AppError(["price not found in the incoming request"], StatusCodes.BAD_REQUEST);
@@ -58,7 +68,6 @@ function validateCreateRequest(req, res, next) {
     return res.json(ErroResponse);
   }
 
-  // need to add middleware for departureTime < arrivalTime
   next();
 }
 

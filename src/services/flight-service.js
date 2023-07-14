@@ -31,10 +31,11 @@ async function getAllFlights(query) {
     // trips= BLR-GKP
     if (query.trips) {
         [departureAirportId, arrivalAirportId] = query.trips.split('-');
+        if (departureAirportId == arrivalAirportId) {
+            throw new AppError('departureAirportId and arrivalAirportId should be different', StatusCodes.BAD_GATEWAY);
+        }
         customFilter.departureAirportId = departureAirportId;
         customFilter.arrivalAirportId = arrivalAirportId;
-
-        // check for departureAirportId, arrivalAirportId should not same
     }
 
     if (query.price) {

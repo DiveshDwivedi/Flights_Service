@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 const  CrudRepository = require('./crud-repository');
-const { Flight, Airplane, Airport } = require('../models');
+const { Flight, Airplane, Airport, City } = require('../models');
 
 class FlightRepository extends CrudRepository {
     constructor() {
@@ -15,23 +15,31 @@ class FlightRepository extends CrudRepository {
                     {
                         model: Airplane,
                         required: true,
-                        as: 'airplane_details'
+                        as: 'airplaneDetails'
                     },
                     {
                         model: Airport,
                         required: true,
-                        as: 'departure_Airport',
+                        as: 'departureAirport',
                         on: {
-                            col1: Sequelize.where(Sequelize.col("Flight.departureAirportId"), "=", Sequelize.col("departure_Airport.code")),
+                            col1: Sequelize.where(Sequelize.col("Flight.departureAirportId"), "=", Sequelize.col("departureAirport.code")),
                         },
+                        include: {
+                            model: City,
+                            required: true,
+                        }
                         // attributes: ["code"] if selected column need to display
                     },
                     {
                         model: Airport,
                         required: true,
-                        as: 'arrival_Airport',
+                        as: 'arrivalAirport',
                         on: {
-                            col1: Sequelize.where(Sequelize.col("Flight.arrivalAirportId"), "=", Sequelize.col("arrival_Airport.code")),
+                            col1: Sequelize.where(Sequelize.col("Flight.arrivalAirportId"), "=", Sequelize.col("arrivalAirport.code")),
+                        },
+                        include: {
+                            model: City,
+                            required: true,
                         }
                     },
             ]

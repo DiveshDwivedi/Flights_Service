@@ -20,7 +20,6 @@ router.get('/', AirportController.getAllAirports);
  * /api/v1/airports/:id @GET
  */
 router.get('/:id', AirportController.getAirport);
-module.exports = router;
 
 /**
  * /api/v1/airports/:id @DELETE
